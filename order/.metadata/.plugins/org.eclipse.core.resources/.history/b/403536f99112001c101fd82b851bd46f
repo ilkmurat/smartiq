@@ -1,0 +1,28 @@
+package com.murat.smartiq.service;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.murat.smartiq.model.OrderItem;
+
+@RequestMapping("/order")
+public interface IOrderService  {
+	
+	@RequestMapping(value = "/placeOrder", method = RequestMethod.POST)
+	public ResponseEntity<OrderItem> placeOrder(@RequestBody OrderItem order);
+
+	@RequestMapping(value = "/updateCategory", method = RequestMethod.POST)
+	public ResponseEntity<OrderItem> updateCategory(@RequestBody OrderItem order);
+
+	@RequestMapping(value = "/removeCategory", method = RequestMethod.POST)
+	public ResponseEntity<OrderItem> removeCategory(@RequestBody OrderItem order);
+
+	@RequestMapping(value = "/allCategories", method = RequestMethod.POST)
+	public ResponseEntity<OrderItem> allCategories(@RequestBody OrderItem order);
+
+	@RequestMapping(value = "/getCategoryById", method = RequestMethod.POST)
+	public ResponseEntity<OrderItem> getCategoryById(@RequestBody OrderItem order);
+
+}

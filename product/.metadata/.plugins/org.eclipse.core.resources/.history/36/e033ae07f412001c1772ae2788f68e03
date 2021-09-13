@@ -1,0 +1,32 @@
+package com.murat.smartiq.service;
+
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.murat.smartiq.model.Category;
+
+@RequestMapping("/category")
+public interface ICategoryService {
+
+	@RequestMapping(value = "/addCategory", method = RequestMethod.POST)
+	public ResponseEntity<Void> addCategory(@RequestBody Category category);
+
+	@RequestMapping(value = "/updateCategory", method = RequestMethod.POST)
+	public ResponseEntity<Void> updateCategory(@RequestBody Category category);
+
+	@RequestMapping(value = "/removeCategory/{shrt_code}", method = RequestMethod.POST)
+	public ResponseEntity<Category> removeCategory(@PathVariable("shrt_code") String shrt_code);
+
+	@GetMapping("/allCategories")
+	public List<Category> allCategories();
+
+	@RequestMapping(value = "/getCategoryById", method = RequestMethod.POST)
+	public ResponseEntity<Category> getCategoryById(@RequestBody Category category);
+
+}

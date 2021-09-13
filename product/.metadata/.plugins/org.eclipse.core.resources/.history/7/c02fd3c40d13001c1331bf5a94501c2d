@@ -1,0 +1,5 @@
+package com.murat.smartiq.mongoImpl;
+
+public class CommonCustomRepositoryImpl {
+
+}

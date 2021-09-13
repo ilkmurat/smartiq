@@ -1,0 +1,40 @@
+package com.murat.smartiq.controller;
+
+import org.springframework.http.ResponseEntity;
+
+import com.murat.smartiq.model.Category;
+import com.murat.smartiq.service.ICategoryService;
+
+public class CategoryController implements ICategoryService{
+
+	@Override
+	public ResponseEntity<Category> addCategory(Category category) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Category> updateCategory(Category category) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Category> removeCategory(Category category) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Category> allCategories(Category category) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Category> getCategoryById(Category category) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

@@ -1,0 +1,5 @@
+package com.murat.smartiq.service;
+
+public interface ICategoryService {
+
+}

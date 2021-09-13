@@ -1,0 +1,48 @@
+package com.murat.smartiq.controller;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.murat.smartiq.model.Product;
+import com.murat.smartiq.service.IProductInstanceService;
+
+@RestController
+public class ProductController implements IProductInstanceService {
+
+	@Override
+	public ResponseEntity<Product> addProduct(Product product) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Product> updateProduct(Product product) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Product> removeProduct(Product product) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Product> allProducts(Product product) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Product> getProductById(Product product) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Product> updateProductStock(Product product) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

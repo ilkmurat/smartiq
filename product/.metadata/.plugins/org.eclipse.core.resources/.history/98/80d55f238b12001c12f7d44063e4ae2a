@@ -1,0 +1,12 @@
+package com.murat.smartiq.service;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@RequestMapping("/order")
+public interface IProductInstanceService {
+	
+	@RequestMapping(value = "/jsonToInternalMsg", method = RequestMethod.POST)
+	public ResponseEntity<JsonToInternalMsgResp> convertFromJsonToCsv(
+			@RequestBody JsonToInternalMsgReq jsonToIntMsgReq);
+
+}

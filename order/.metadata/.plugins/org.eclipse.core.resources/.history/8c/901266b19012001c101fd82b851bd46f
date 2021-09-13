@@ -1,0 +1,6 @@
+package com.murat.smartiq.service;
+
+@RequestMapping("/order")
+public interface IOrderService  {
+
+}

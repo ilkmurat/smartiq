@@ -1,0 +1,67 @@
+package com.murat.smartiq.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import com.murat.smartiq.model.Category;
+import com.murat.smartiq.repository.ICategoryRepository;
+import com.murat.smartiq.service.ICategoryService;
+
+public class CategoryController implements ICategoryService{
+	
+	@Autowired
+	ICategoryRepository categoryRepo;
+	
+	/**
+	 * creating new category
+	 */
+	@Override
+	public ResponseEntity<Void> addCategory(Category category) {
+		categoryRepo.save(category);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	
+	
+	/**
+	 * update exist category
+	 */
+	@Override
+	public ResponseEntity<Void> updateCategory(Category category) {
+		 // if (categoryRepo.isCategoryExist(category)) {
+			//  categoryRepo.updateCategory(category);
+	            return new ResponseEntity<Void>(HttpStatus.OK);
+	        //}
+
+	       // return new ResponseEntity<Void>(HttpStatus.NOT_MODIFIED);
+	}
+
+	@Override
+	public ResponseEntity<Category> removeCategory(@PathVariable("shrt_code") String shrt_code) {
+
+        /**User user = userRepository.findByID(user_id);
+        if (user == null) {
+            System.out.println("Unable to delete. User with id " + user_id + " not found");
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
+
+        userRepository.deleteUserById(user_id);*/
+        return new ResponseEntity<Category>(HttpStatus.NO_CONTENT);
+	}
+
+	@Override
+	public List<Category> allCategories() {
+		return categoryRepo.findAll();
+	}
+
+	@Override
+	public ResponseEntity<Category> getCategoryById(@PathVariable("categoryId") String categoryId){
+		 return categoryRepo.findById(categoryId)
+	                .map(book -> ResponseEntity.ok().body(book))
+	                .orElse(ResponseEntity.notFound().build());
+	}
+
+}

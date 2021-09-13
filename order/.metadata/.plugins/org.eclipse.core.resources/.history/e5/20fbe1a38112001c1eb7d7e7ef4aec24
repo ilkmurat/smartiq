@@ -1,0 +1,27 @@
+package com.murat.smartiq.model;
+
+import java.util.Date;
+
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document("orderItem")
+public class OrderItem {
+	
+	private String orderItemId ;
+	
+	private int orderId ;
+	
+	private String productId;
+	
+	private int totalCount;
+	
+	private double totalPrice;
+	
+	private Date createDate;
+	
+	private String address ;
+	
+	private String status ;
+	
+
+}

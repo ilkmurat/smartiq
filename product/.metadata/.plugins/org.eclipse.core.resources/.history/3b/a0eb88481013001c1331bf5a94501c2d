@@ -1,0 +1,9 @@
+package com.murat.smartiq.repository;
+
+import org.springframework.data.mongodb.repository.MongoRepository;
+import com.murat.smartiq.model.Category;
+import com.murat.smartiq.mongoImpl.ICommonCustomRepository;
+
+public interface ICategoryRepository extends MongoRepository<Category, String> ,ICommonCustomRepository {
+
+}

@@ -1,0 +1,15 @@
+package com.murat.smartiq.mongoImpl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+
+public class CommonCustomRepositoryImpl implements ICommonCustomRepository{
+	
+	 private final MongoTemplate mongoTemplate;
+
+	    @Autowired
+	    public CommonCustomRepositoryImpl(MongoTemplate mongoTemplate) {
+	        this.mongoTemplate = mongoTemplate;
+	    }
+
+}

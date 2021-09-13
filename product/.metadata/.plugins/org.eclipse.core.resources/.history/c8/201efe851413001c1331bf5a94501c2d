@@ -1,0 +1,15 @@
+package com.murat.smartiq.repository;
+
+import java.util.Optional;
+
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
+
+import com.murat.smartiq.model.Category;
+import com.murat.smartiq.mongoImpl.ICommonCustomRepository;
+
+public interface ICategoryRepository extends MongoRepository<Category, String> ,ICommonCustomRepository {
+
+    @Query("{shrt_code : ?0}") 
+    Optional<Category> getCategoryByShortCode(String shortCode);
+}

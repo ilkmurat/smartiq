@@ -1,0 +1,5 @@
+package com.murat.smartiq.repository;
+
+public interface ICategoryRepository {
+
+}

@@ -1,0 +1,54 @@
+package com.murat.smartiq.model;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Field;
+
+public class Product {
+	
+	
+	@Id
+	private String productId;
+	
+	@Field("product_name")
+	private String productName;
+	
+	
+	private int stockCount;
+	
+	private double price ;
+
+	public String getProductId() {
+		return productId;
+	}
+
+	public void setProductId(String productId) {
+		this.productId = productId;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public int getStockCount() {
+		return stockCount;
+	}
+
+	public void setStockCount(int stockCount) {
+		this.stockCount = stockCount;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+	
+	
+
+}

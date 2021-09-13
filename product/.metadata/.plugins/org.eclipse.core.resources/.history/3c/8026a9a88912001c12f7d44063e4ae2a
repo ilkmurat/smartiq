@@ -1,0 +1,7 @@
+package com.murat.smartiq.controller;
+
+import com.murat.smartiq.service.IOrderService;
+
+public class OrderController implements IOrderService {
+
+}

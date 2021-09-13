@@ -1,0 +1,10 @@
+package com.murat.smartiq.controller;
+
+import org.springframework.web.bind.annotation.RestController;
+
+import com.murat.smartiq.service.IProductInstanceService;
+
+@RestController
+public class ProductController implements IProductInstanceService {
+
+}

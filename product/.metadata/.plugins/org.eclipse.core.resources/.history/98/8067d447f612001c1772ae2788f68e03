@@ -1,0 +1,36 @@
+package com.murat.smartiq.service;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.murat.smartiq.model.Category;
+import com.murat.smartiq.model.Product;
+
+@RequestMapping("/product")
+public interface IProductInstanceService {
+
+	@RequestMapping(value = "/addProduct", method = RequestMethod.POST)
+	public ResponseEntity<Void> addProduct(@RequestBody Product product);
+
+	@RequestMapping(value = "/updateProduct", method = RequestMethod.POST)
+	public ResponseEntity<Void> updateProduct(@RequestBody Product product);
+
+	@RequestMapping(value = "/removeProduct/{productId}", method = RequestMethod.POST)
+	public ResponseEntity<Product> removeProduct(@PathVariable("productId") String productId);
+
+	@RequestMapping(value = "/allProducts", method = RequestMethod.POST)
+	public ResponseEntity<Product> allProducts(@RequestBody Product product);
+
+	@RequestMapping(value = "/getProductById", method = RequestMethod.POST)
+	public ResponseEntity<Product> getProductById(@RequestBody Product product);
+
+	@RequestMapping(value = "/updateProductStock", method = RequestMethod.POST)
+	public ResponseEntity<Product> updateProductStock(@RequestBody Product product);
+
+	@RequestMapping(value = "/getProductsOfCategory", method = RequestMethod.POST)
+	public ResponseEntity<Product> getProductsOfCategory(@RequestBody Category product);
+
+}

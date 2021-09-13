@@ -1,0 +1,9 @@
+package com.murat.smartiq.repository;
+
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+import com.murat.smartiq.model.OrderItem;
+
+public interface IOrderRepository extends MongoRepository<OrderItem, String> {
+
+}

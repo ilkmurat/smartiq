@@ -1,0 +1,69 @@
+package com.murat.smartiq.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.murat.smartiq.model.Category;
+import com.murat.smartiq.model.Product;
+import com.murat.smartiq.repository.IProductRepository;
+import com.murat.smartiq.service.IProductInstanceService;
+
+@RestController
+public class ProductController implements IProductInstanceService {
+
+	@Autowired
+	IProductRepository productRepo;
+
+	@Override
+	public ResponseEntity<Void> addProduct(Product product) {
+		productRepo.save(product);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<Void> updateProduct(Product product) {
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<Product> removeProduct(@PathVariable("productId") String productId) {
+		 /**User user = userRepository.findByID(user_id);
+        if (user == null) {
+            System.out.println("Unable to delete. User with id " + user_id + " not found");
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
+
+        userRepository.deleteUserById(user_id);*/
+        return new ResponseEntity<Product>(HttpStatus.NO_CONTENT);
+	}
+
+	@Override
+	public List<Product> allProducts() {
+		return productRepo.findAll();
+	}
+
+	@Override
+	public ResponseEntity<Product> getProductById(@PathVariable("productId") String productId) {
+		return productRepo.findById(productId)
+                .map(product -> ResponseEntity.ok().body(product))
+                .orElse(ResponseEntity.notFound().build());
+	}
+
+	@Override
+	public ResponseEntity<Product> updateProductStock(Product product) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Product> getProductsOfCategory(Category product) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}
