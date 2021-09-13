@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +38,8 @@ public class ProductController implements IProductInstanceService {
 	@Override
 	public ResponseEntity addProduct(Product product) {
 		try {
-			if (product.getProductId().isEmpty() || product.getStockCount() < 1 || product.getPrice() < 0.0) {
+			if (product == null || SmartIqUtils.isNullorEmpty(Arrays.asList(product.getProductName()))
+					|| product.getStockCount() < 1 || product.getPrice() < 0) {
 				return new ResponseEntity<>(
 						SmartIqUtils.errorResponse("Missing Parameter", "Required product info : id , count and price"),
 						HttpStatus.METHOD_NOT_ALLOWED);
@@ -47,7 +49,7 @@ public class ProductController implements IProductInstanceService {
 			productRepo.save(product);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>(SmartIqUtils.errorResponse("Service Exception", e.getMessage()),
+			return new ResponseEntity<>(SmartIqUtils.errorResponse("Service Exception", e.toString()),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -58,12 +60,12 @@ public class ProductController implements IProductInstanceService {
 	@Override
 	public ResponseEntity updateProduct(Product product) {
 		try {
-			if (product.getProductId() != null) {
+			if (product.getProductId() == null) {
 				return new ResponseEntity<>(SmartIqUtils.errorResponse("Missing Parameter", "productId required"),
 						HttpStatus.METHOD_NOT_ALLOWED);
 			}
 			Optional<Product> prod = productRepo.findById(product.getProductId());
-			if (prod != null) {
+			if (prod.isPresent()) {
 				if (product.getProductName() != null)
 					prod.get().setProductName(product.getProductName());
 
@@ -82,7 +84,7 @@ public class ProductController implements IProductInstanceService {
 			return new ResponseEntity<>(SmartIqUtils.errorResponse("Product Empty", "Record not found"),
 					HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
-			return new ResponseEntity<>(SmartIqUtils.errorResponse("Service Exception", e.getMessage()),
+			return new ResponseEntity<>(SmartIqUtils.errorResponse("Service Exception", e.toString()),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -93,12 +95,12 @@ public class ProductController implements IProductInstanceService {
 	@Override
 	public ResponseEntity removeProduct(@PathVariable("productId") String productId) {
 		try {
-			if (productId != null) {
+			if (productId == null) {
 				return new ResponseEntity<>(SmartIqUtils.errorResponse("Missing Parameter", "productId required"),
 						HttpStatus.METHOD_NOT_ALLOWED);
 			}
 			Optional<Product> product = productRepo.findById(productId);
-			if (product != null) {
+			if (product.isPresent()) {
 				productRepo.deleteById(product.get().getProductId());
 				return new ResponseEntity<Product>(HttpStatus.NO_CONTENT);
 			}
@@ -106,7 +108,7 @@ public class ProductController implements IProductInstanceService {
 			return new ResponseEntity<>(SmartIqUtils.errorResponse("Product Empty", "Record not found"),
 					HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
-			return new ResponseEntity<>(SmartIqUtils.errorResponse("Service Exception", e.getMessage()),
+			return new ResponseEntity<>(SmartIqUtils.errorResponse("Service Exception", e.toString()),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -126,13 +128,13 @@ public class ProductController implements IProductInstanceService {
 	public ResponseEntity updateProductStock(Product product) {
 		try {
 
-			if (product.getProductId() != null) {
+			if (product.getProductId() == null) {
 				return new ResponseEntity<>(SmartIqUtils.errorResponse("Missing Parameter", "productId required"),
 						HttpStatus.METHOD_NOT_ALLOWED);
 			}
 
 			Optional<Product> productStock = productRepo.findById(product.getProductId());
-			if (productStock != null) {
+			if (productStock.isPresent()) {
 				if (product.getStockCount() >= 0)
 					productStock.get().setStockCount(product.getStockCount());
 				productRepo.save(productStock.get());
@@ -141,39 +143,44 @@ public class ProductController implements IProductInstanceService {
 			return new ResponseEntity<>(SmartIqUtils.errorResponse("Product Empty", "Record not found"),
 					HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
-			return new ResponseEntity<>(SmartIqUtils.errorResponse("Service Exception", e.getMessage()),
+			return new ResponseEntity<>(SmartIqUtils.errorResponse("Service Exception", e.toString()),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@Override
 	public ResponseEntity incrementProductStock(String product) {
-		JSONObject request = new JSONObject(product);
-		String productId = request.optString("productId");
-		int soldCount = request.optInt("count");
-		Optional<Product> productStock = productRepo.findById(productId);
-		if (productStock != null) {
-			int totalStock = productStock.get().getStockCount() + soldCount;
-			productStock.get().setStockCount(totalStock);
-			productRepo.save(productStock.get());
-			// callback
-			return new ResponseEntity<Void>(HttpStatus.OK);
+		try {
+			JSONObject request = new JSONObject(product);
+			String productId = request.optString("productId");
+			int soldCount = request.optInt("count");
+			Optional<Product> productStock = productRepo.findById(productId);
+			if (productStock != null) {
+				int totalStock = productStock.get().getStockCount() + soldCount;
+				productStock.get().setStockCount(totalStock);
+				productRepo.save(productStock.get());
+				// callback
+				return new ResponseEntity<Void>(HttpStatus.OK);
+			}
+			return new ResponseEntity<>(SmartIqUtils.errorResponse("Product Empty", "Record not found"),
+					HttpStatus.NOT_FOUND);
+		} catch (JSONException e) {
+			return new ResponseEntity<>(SmartIqUtils.errorResponse("Service Exception", e.toString()),
+					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<>(SmartIqUtils.errorResponse("Product Empty", "Record not found"),
-				HttpStatus.NOT_FOUND);
 	}
 
 	@Override
 	public ResponseEntity decrementProductStock(String productList) {
 		try {
 			List<Product> prodList = new ArrayList<>();
-			//Integer orderId = null;
+			// Integer orderId = null;
 			JSONArray array = new JSONArray(productList);
 			for (int i = 0; i < array.length(); ++i) {
 				JSONObject request = array.getJSONObject(i);
 				String productId = request.optString("productId");
 				int soldCount = request.optInt("count");
-				//orderId = request.optInt("orderId");
+				// orderId = request.optInt("orderId");
 				Optional<Product> productStock = productRepo.findById(productId);
 				if (productStock != null) {
 					int totalStock = productStock.get().getStockCount() - soldCount;
@@ -186,7 +193,7 @@ public class ProductController implements IProductInstanceService {
 										"Up to" + productStock.get().getStockCount() + "can be taken"),
 								HttpStatus.METHOD_NOT_ALLOWED);
 					}
-				}else {
+				} else {
 					return new ResponseEntity<>(SmartIqUtils.errorResponse("Product Empty", "Record not found"),
 							HttpStatus.NOT_FOUND);
 				}
@@ -195,7 +202,7 @@ public class ProductController implements IProductInstanceService {
 			productRepo.saveAll(prodList);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		} catch (JSONException e) {
-			return new ResponseEntity<>(SmartIqUtils.errorResponse("Service Exception", e.getMessage()),
+			return new ResponseEntity<>(SmartIqUtils.errorResponse("Service Exception", e.toString()),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

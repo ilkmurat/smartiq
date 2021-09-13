@@ -1,5 +1,6 @@
 package com.murat.smartiq.controller;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -27,16 +28,18 @@ public class CategoryController implements ICategoryService {
 	@Override
 	public ResponseEntity addCategory(Category category) {
 		try {
-			if (category == null || category.getCategoryName() == null || category.getShortCode() == null) {
+			List<String> objectList = Arrays.asList(category.getCategoryName(), category.getShortCode());
+
+			if (category == null || SmartIqUtils.isNullorEmpty(objectList)) {
 				return new ResponseEntity<>(
-						SmartIqUtils.errorResponse("Category not created Empty", "Please provide name and short code"),
+						SmartIqUtils.errorResponse("Category not created", "Please provide name and short code"),
 						HttpStatus.NOT_FOUND);
 			}
 			category.setCreateDate(new Date());
 			categoryRepo.save(category);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>(SmartIqUtils.errorResponse("Service Exception", e.getMessage()),
+			return new ResponseEntity<>(SmartIqUtils.errorResponse("Service Exception", e.toString()),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -47,16 +50,16 @@ public class CategoryController implements ICategoryService {
 	@Override
 	public ResponseEntity updateCategory(Category category) {
 		try {
-			if (category == null || category.getCategoryId() == null) {
+			if (category == null || SmartIqUtils.isNullorEmpty(Arrays.asList(category.getCategoryId()))) {
 				return new ResponseEntity<>(SmartIqUtils.errorResponse("Category Empty", "Please provide category id"),
 						HttpStatus.NOT_FOUND);
 			}
 			Optional<Category> cat = categoryRepo.findById(category.getCategoryId());
 			if (cat != null) {
-				if (!category.getCategoryName().isEmpty())
+				if (!SmartIqUtils.isNullorEmpty(Arrays.asList(category.getCategoryName())))
 					cat.get().setCategoryName(category.getCategoryName());
 
-				if (!category.getShortCode().isEmpty())
+				if (!SmartIqUtils.isNullorEmpty(Arrays.asList(category.getShortCode())))
 					cat.get().setShortCode(category.getShortCode());
 
 				categoryRepo.save(cat.get());
@@ -65,7 +68,7 @@ public class CategoryController implements ICategoryService {
 			return new ResponseEntity<>(SmartIqUtils.errorResponse("Category not updated", "Record not found"),
 					HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
-			return new ResponseEntity<>(SmartIqUtils.errorResponse("Service Exception", e.getMessage()),
+			return new ResponseEntity<>(SmartIqUtils.errorResponse("Service Exception", e.toString()),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -90,7 +93,7 @@ public class CategoryController implements ICategoryService {
 			return new ResponseEntity<>(SmartIqUtils.errorResponse("Category not deleted", "Record not found"),
 					HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
-			return new ResponseEntity<>(SmartIqUtils.errorResponse("Service Exception", e.getMessage()),
+			return new ResponseEntity<>(SmartIqUtils.errorResponse("Service Exception", e.toString()),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 

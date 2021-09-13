@@ -58,7 +58,7 @@ public class OrderController implements IOrderService {
 			}
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>(errorResponse("Service Exception", e.getMessage()),
+			return new ResponseEntity<>(errorResponse("Service Exception", e.toString()),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -69,7 +69,7 @@ public class OrderController implements IOrderService {
 	@Override
 	public ResponseEntity updateAddress(OrderItem item) {
 		try {
-			if (item == null || item.getOrderId() <= 0 || item.getAddress().isEmpty()) {
+			if (item == null || item.getOrderId() <= 0 || item.getAddress() == null || item.getAddress().isEmpty()) {
 				return new ResponseEntity<>(errorResponse("Item is empty", "Please provide a order id and address"),
 						HttpStatus.NOT_FOUND);
 			}
@@ -86,7 +86,7 @@ public class OrderController implements IOrderService {
 					HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
 
-			return new ResponseEntity<>(errorResponse("Service Exception", e.getMessage()),
+			return new ResponseEntity<>(errorResponse("Service Exception", e.toString()),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -107,7 +107,7 @@ public class OrderController implements IOrderService {
 					HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
 
-			return new ResponseEntity<>(errorResponse("Service Exception", e.getMessage()),
+			return new ResponseEntity<>(errorResponse("Service Exception", e.toString()),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
